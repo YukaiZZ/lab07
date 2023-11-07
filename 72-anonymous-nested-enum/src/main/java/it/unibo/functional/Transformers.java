@@ -4,6 +4,7 @@ import it.unibo.functional.api.Function;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,7 +55,16 @@ public final class Transformers {
      * @param <O> output elements type
      */
     public static <I, O> List<O> transform(final Iterable<I> base, final Function<I, O> transformer) {
-        return null;
+        return flattenTransform(base, new Function<I,List<O>>(){
+            @Override
+            public List<O> call(I input){
+                List<O> singleItemList = new ArrayList<>();
+                
+                singleItemList.add(transformer.call(input));
+              
+                return singleItemList;
+             }
+        });
     }
 
     /**
@@ -70,7 +80,7 @@ public final class Transformers {
      * @param <I> type of the collection elements
      */
     public static <I> List<? extends I> flatten(final Iterable<? extends Collection<? extends I>> base) {
-        return null;
+        return flattenTransform(base, Function.identity());
     }
 
     /**
@@ -87,7 +97,17 @@ public final class Transformers {
      * @param <I> elements type
      */
     public static <I> List<I> select(final Iterable<I> base, final Function<I, Boolean> test) {
-        return null;
+         return flattenTransform(base, new Function<I,List<I>>(){
+            @Override
+            public List<I> call(I input){
+                if(test.call(input)){
+                    List<I> oddList = new ArrayList<>();  
+                    oddList.add(input);
+                    return oddList;
+                }
+                return Collections.emptyList();
+             }
+        });
     }
 
     /**
@@ -103,6 +123,23 @@ public final class Transformers {
      * @param <I> elements type
      */
     public static <I> List<I> reject(final Iterable<I> base, final Function<I, Boolean> test) {
-        return null;
+        return select(base, new Function<I,Boolean>(){
+           @Override
+           public Boolean call(I input){
+            return !test.call(input);
+           }
+        });
+        
+        /*return flattenTransform(base, new Function<I,List<I>>(){
+            @Override
+            public List<I> call(I input){
+                if(!test.call(input)){
+                    List<I> oddList = new ArrayList<>();  
+                    oddList.add(input);
+                    return oddList;
+                }
+                return Collections.emptyList();
+             }
+        });*/  /*Tests how is the Function "test" work ,Conclusion :it have the same function with the Function in select method*/
     }
 }
