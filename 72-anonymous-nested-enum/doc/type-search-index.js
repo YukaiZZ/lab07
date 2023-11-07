@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"it.unibo.functional.api","l":"Function"},{"p":"it.unibo.functional","l":"Transformers"}];updateSearchResults();
