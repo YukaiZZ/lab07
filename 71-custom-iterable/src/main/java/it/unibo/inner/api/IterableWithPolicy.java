@@ -1,4 +1,5 @@
 package it.unibo.inner.api;
+import it.unibo.inner.api.Predicate;
 
 /**
  * This interface represents an iterable collection with a policy.
@@ -9,5 +10,5 @@ public interface IterableWithPolicy<T> extends Iterable<T> {
      * Configures the policy used to filter out the elements to iterate.
      * @param filter the predicate used to filter out the elements in the collection during the iteration.
      */
-    void setIterationPolicy(Predicate<T> filter);
+   void setIterationPolicy(Predicate<T> filter);
 }
